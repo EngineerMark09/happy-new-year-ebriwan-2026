@@ -700,7 +700,7 @@
                     ['#ffffff', '#f8f8f8', '#e8e8e8', '#d0d0d0']
                 ];
                 const palette = palettes[Math.floor(Math.random() * palettes.length)];
-                const count = isMobile ? (60 + Math.floor(Math.random() * 30)) : (100 + Math.floor(Math.random() * 50));
+                const count = isMobile ? (30 + Math.floor(Math.random() * 15)) : (100 + Math.floor(Math.random() * 50));
 
                 for (let i = 0; i < count; i++) {
                     const angle = (Math.PI * 2 / count) * i + Math.random() * 0.2;
@@ -711,7 +711,7 @@
                         vy: Math.sin(angle) * speed,
                         color: palette[Math.floor(Math.random() * palette.length)],
                         life: 1,
-                        decay: 0.007 + Math.random() * 0.01,
+                        decay: isMobile ? 0.015 + Math.random() * 0.015 : 0.007 + Math.random() * 0.01,
                         size: 1.5 + Math.random() * 1.5
                     });
                 }
@@ -724,7 +724,7 @@
             ctx.fillStyle = 'rgba(0,0,0,0.12)';
             ctx.fillRect(0, 0, W, H);
 
-            if (celebrating && Math.random() < (isMobile ? 0.015 : 0.02)) {
+            if (celebrating && Math.random() < (isMobile ? 0.008 : 0.02)) {
                 rockets.push(new Rocket());
             }
 
