@@ -1,70 +1,40 @@
-#  Happy New Year 2026!
+# Happy New Year 2026
 
-> *A cinematic countdown experience for welcoming 2026*
+A cinematic countdown web experience.
 
-**[ View Live Demo](https://engineermark09.github.io/happy-new-year-ebriwan-2026/)**
-
----
-
-##  Features
-
--  **Stunning Visuals**  Aurora borealis, twinkling stars, shooting stars
--  **Multi-color Fireworks**  Gold, blue, rose, green, and white palettes
--  **Immersive Audio**  Procedural sounds using Web Audio API (no external files!)
--  **Dramatic Countdown**  10-second countdown with animated rings
--  **Mobile Optimized**  Responsive design, touch-friendly, PWA-ready
--  **Accessible**  Respects reduced motion preferences
+**[Live Demo](https://engineermark09.github.io/happy-new-year-ebriwan-2026/)**
 
 ---
 
-##  Quick Start
+## Features
 
-Just open `index.html` in your browser  no installation needed!
-
-Or visit the live site: **[engineermark09.github.io/happy-new-year-ebriwan-2026](https://engineermark09.github.io/happy-new-year-ebriwan-2026/)**
-
----
-
-##  Experience Flow
-
-1. **Arrival**  Stars twinkle, aurora glows softly
-2. **Begin**  Tap the glowing orb to start
-3. **Countdown**  10... 9... 8... dramatic tension builds
-4. **Zero Moment**  Brief silence
-5. **Celebration**  Fireworks explode, "Happy New Year 2026!" appears
-6. **Afterglow**  Ambient fireworks continue, replay available
+- Aurora borealis, twinkling stars, shooting stars
+- Multi-color fireworks (gold, blue, rose, green, white)
+- Procedural audio via Web Audio API
+- 10-second countdown with animated rings
+- Mobile responsive, PWA-ready
 
 ---
 
-##  Tech Stack
+## How to Use
 
-- **HTML5**  Single-file architecture
-- **CSS3**  Custom properties, animations, responsive design
-- **Vanilla JavaScript**  No frameworks
-- **GSAP**  Smooth animations (CDN)
-- **Web Audio API**  Procedural sound generation
-- **Google Fonts**  Inter & Playfair Display
+Open `index.html` in any browser. That's it.
 
 ---
 
-##  Compatibility
+## Tech
 
-| Platform | Status |
-|----------|--------|
-| Chrome |  Full support |
-| Safari |  Full support |
-| Firefox |  Full support |
-| Edge |  Full support |
-| Mobile (iOS/Android) |  Optimized |
+- HTML/CSS/Vanilla JS
+- GSAP for animations
+- Web Audio API for sound
+- Google Fonts (Inter, Playfair Display)
 
 ---
 
-##  License
+## Browser Support
 
-MIT  Feel free to use, modify, and share!
+Works on Chrome, Safari, Firefox, Edge, and mobile browsers.
 
 ---
 
-Made with  for 2026
-
-**Happy New Year, ebriwan!** 
+MIT License
