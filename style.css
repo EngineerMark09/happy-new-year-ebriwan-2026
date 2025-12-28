@@ -1,0 +1,484 @@
+/* ==========================================================================
+   TIMELESS NEW YEAR - CINEMATIC WEB EXPERIENCE
+   A ritual-based, emotion-first design
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS Custom Properties (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Colors - Dark cinematic palette */
+  --color-void: #000000;
+  --color-deep: #0a0a0c;
+  --color-night: #111115;
+  --color-subtle: #1a1a1f;
+  --color-muted: #2a2a32;
+  --color-text: #e8e6e3;
+  --color-text-dim: #8a8890;
+  --color-glow: rgba(255, 248, 240, 0.03);
+  --color-accent: rgba(255, 220, 180, 0.8);
+  
+  /* Typography */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --font-weight-light: 200;
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  
+  /* Timing - Slow, intentional */
+  --duration-instant: 100ms;
+  --duration-fast: 300ms;
+  --duration-normal: 600ms;
+  --duration-slow: 1200ms;
+  --duration-glacial: 2400ms;
+  --duration-drift: 4000ms;
+  
+  /* Easing - Organic motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.15, 1);
+  --ease-breathe: cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-normal);
+  background: var(--color-void);
+  color: var(--color-text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Cursor fade during immersion */
+body.immersive {
+  cursor: none;
+}
+
+body.immersive * {
+  cursor: none;
+}
+
+/* --------------------------------------------------------------------------
+   Film Grain Overlay
+   -------------------------------------------------------------------------- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  animation: grain 0.5s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 1%); }
+  30% { transform: translate(-2%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 2%); }
+  60% { transform: translate(2%, -2%); }
+  70% { transform: translate(-2%, -1%); }
+  80% { transform: translate(1%, 2%); }
+  90% { transform: translate(-1%, -2%); }
+}
+
+/* --------------------------------------------------------------------------
+   Canvas Layers
+   -------------------------------------------------------------------------- */
+#stars,
+#fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#fireworks {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+#fireworks.active {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Experience Container
+   -------------------------------------------------------------------------- */
+.experience {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   Phase System
+   -------------------------------------------------------------------------- */
+.phase {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+    opacity var(--duration-slow) var(--ease-out),
+    visibility 0s var(--duration-slow);
+}
+
+.phase.active {
+  opacity: 1;
+  visibility: visible;
+  transition: 
+    opacity var(--duration-slow) var(--ease-out),
+    visibility 0s 0s;
+}
+
+/* --------------------------------------------------------------------------
+   Phase 0: Arrival
+   -------------------------------------------------------------------------- */
+.phase-arrival {
+  gap: 3rem;
+}
+
+.arrival-text {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: var(--font-weight-light);
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--color-text-dim);
+  opacity: 0;
+  animation: textReveal var(--duration-glacial) var(--ease-out) 1s forwards;
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Begin Button - Minimal, intentional */
+.begin-button {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  animation: buttonReveal var(--duration-glacial) var(--ease-out) 1.5s forwards;
+}
+
+@keyframes buttonReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.button-circle {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-muted);
+  border-radius: 50%;
+  transition: 
+    border-color var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.button-circle::before {
+  content: '';
+  position: absolute;
+  inset: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  background: var(--color-text-dim);
+  border-radius: 50%;
+  transition: 
+    background var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
+}
+
+.begin-button:hover .button-circle {
+  border-color: var(--color-text-dim);
+  transform: scale(1.05);
+}
+
+.begin-button:hover .button-circle::before {
+  background: var(--color-text);
+  transform: scale(1.2);
+}
+
+.begin-button:focus-visible .button-circle {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-void), 0 0 0 4px var(--color-text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   Phase 2: Countdown
+   -------------------------------------------------------------------------- */
+.phase-countdown {
+  background: var(--color-void);
+}
+
+.countdown-number {
+  font-size: clamp(8rem, 25vw, 20rem);
+  font-weight: var(--font-weight-light);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  opacity: 0;
+  transform: scale(1);
+  transition: 
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-normal) var(--ease-breathe);
+}
+
+.countdown-number.visible {
+  opacity: 1;
+}
+
+.countdown-number.dissolve {
+  opacity: 0;
+  transform: scale(1.02);
+}
+
+/* Visual pressure - subtle brightness increase */
+.phase-countdown.pressure-1 { background: #010101; }
+.phase-countdown.pressure-2 { background: #020202; }
+.phase-countdown.pressure-3 { background: #030303; }
+.phase-countdown.pressure-4 { background: #040404; }
+.phase-countdown.pressure-5 { background: #050506; }
+.phase-countdown.pressure-6 { background: #060607; }
+.phase-countdown.pressure-7 { background: #070708; }
+.phase-countdown.pressure-8 { background: #080809; }
+.phase-countdown.pressure-9 { background: #09090a; }
+.phase-countdown.pressure-10 { background: #0a0a0c; }
+
+/* --------------------------------------------------------------------------
+   Phase 4 & 5: Message
+   -------------------------------------------------------------------------- */
+.phase-message {
+  gap: 1.5rem;
+  background: transparent;
+}
+
+.message-main {
+  font-size: clamp(2rem, 8vw, 5rem);
+  font-weight: var(--font-weight-light);
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 
+    opacity var(--duration-glacial) var(--ease-out),
+    transform var(--duration-glacial) var(--ease-out);
+}
+
+.phase-message.active .message-main {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-sub {
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-weight: var(--font-weight-light);
+  letter-spacing: 0.15em;
+  color: var(--color-text-dim);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 
+    opacity var(--duration-glacial) var(--ease-out) 0.8s,
+    transform var(--duration-glacial) var(--ease-out) 0.8s;
+}
+
+.phase-message.active .message-sub {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Phase 6: Controls
+   -------------------------------------------------------------------------- */
+.controls {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+    opacity var(--duration-slow) var(--ease-out),
+    visibility 0s var(--duration-slow);
+}
+
+.controls.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: 
+    opacity var(--duration-slow) var(--ease-out),
+    visibility 0s 0s;
+}
+
+.control-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+.control-button:hover {
+  color: var(--color-text);
+}
+
+.control-button:focus-visible {
+  outline: 1px solid var(--color-text-dim);
+  outline-offset: 4px;
+}
+
+.control-button svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+
+/* Sound toggle states */
+#soundToggle .sound-off {
+  display: none;
+}
+
+#soundToggle.muted .sound-on {
+  display: none;
+}
+
+#soundToggle.muted .sound-off {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .grain {
+    display: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-text: #ffffff;
+    --color-text-dim: #cccccc;
+    --color-muted: #666666;
+  }
+  
+  .button-circle {
+    border-width: 2px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Optimizations
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .phase {
+    padding: 1.5rem;
+  }
+  
+  .begin-button {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .controls {
+    bottom: 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .arrival-text {
+    letter-spacing: 0.15em;
+  }
+  
+  .begin-button {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .controls {
+    bottom: 1rem;
+    gap: 1rem;
+  }
+  
+  .control-button {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .controls {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
+}
