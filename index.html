@@ -439,7 +439,6 @@
     (() => {
         'use strict';
 
-        // ============ AUDIO ENGINE ============
         const Sound = {
             ctx: null,
             master: null,
@@ -458,7 +457,6 @@
                 if (!this.ctx || this.muted) return;
                 const t = this.ctx.currentTime;
 
-                // Deep resonant pulse
                 const osc = this.ctx.createOscillator();
                 const g = this.ctx.createGain();
                 osc.type = 'sine';
@@ -472,7 +470,6 @@
                 osc.start(t);
                 osc.stop(t + 1);
 
-                // Subtle click
                 const click = this.ctx.createOscillator();
                 const cg = this.ctx.createGain();
                 click.type = 'triangle';
@@ -489,7 +486,6 @@
                 if (!this.ctx || this.muted) return;
                 const t = this.ctx.currentTime;
 
-                // Noise burst
                 const len = this.ctx.sampleRate * 3;
                 const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
                 const data = buf.getChannelData(0);
@@ -513,7 +509,6 @@
                 g.connect(this.master);
                 src.start(t);
 
-                // Sub
                 const sub = this.ctx.createOscillator();
                 const sg = this.ctx.createGain();
                 sub.frequency.setValueAtTime(50, t);
@@ -528,7 +523,7 @@
 
             startPad() {
                 if (!this.ctx) return;
-                const freqs = [65.41, 98.00, 130.81, 196.00, 261.63]; // C2, G2, C3, G3, C4
+                const freqs = [65.41, 98.00, 130.81, 196.00, 261.63];
                 freqs.forEach((f, i) => {
                     const o = this.ctx.createOscillator();
                     const g = this.ctx.createGain();
@@ -564,7 +559,6 @@
             }
         };
 
-        // ============ CANVAS SETUP ============
         const canvases = {};
         const contexts = {};
         ['sky', 'aurora', 'stars', 'shootingStars', 'fireworks'].forEach(id => {
@@ -581,10 +575,8 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // Mobile detection for performance
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-        // ============ STARFIELD ============
         let stars = [];
         function initStars() {
             stars = [];
@@ -614,7 +606,6 @@
             });
         }
 
-        // ============ SHOOTING STARS ============
         let shooters = [];
         function spawnShooter() {
             if (Math.random() > (isMobile ? 0.002 : 0.003)) return;
@@ -658,7 +649,6 @@
             });
         }
 
-        // ============ AURORA ============
         let auroraTime = 0;
         function drawAurora() {
             const ctx = contexts.aurora;
@@ -675,7 +665,6 @@
             ctx.fillRect(0, 0, W, H * 0.6);
         }
 
-        // ============ FIREWORKS ============
         let particles = [], rockets = [], celebrating = false;
 
         class Rocket {
@@ -764,7 +753,6 @@
             });
         }
 
-        // ============ ANIMATION LOOP ============
         function animate() {
             drawStars();
             drawShooters();
@@ -774,7 +762,6 @@
             requestAnimationFrame(animate);
         }
 
-        // ============ SCENE MANAGEMENT ============
         const scenes = {
             intro: document.getElementById('intro'),
             countdown: document.getElementById('countdown'),
@@ -811,7 +798,6 @@
                     n--;
                     setTimeout(tick, 1000);
                 } else {
-                    // Zero moment - silence
                     gsap.to(scenes.countdown, { opacity: 0, duration: 0.25 });
                     setTimeout(triggerFinale, 350);
                 }
@@ -824,7 +810,6 @@
             celebrating = true;
             canvases.fireworks.style.opacity = 1;
 
-            // Initial burst
             for (let i = 0; i < 3; i++) setTimeout(() => rockets.push(new Rocket()), i * 250);
 
             const tl = gsap.timeline();
@@ -844,7 +829,6 @@
             controls.classList.remove('show');
             document.body.classList.remove('immersive');
 
-            // Reset all scene states
             gsap.set(scenes.countdown, { opacity: 1 });
             gsap.set(countNum, { opacity: 0 });
             gsap.set('.count-ring', { opacity: 0 });
@@ -861,19 +845,16 @@
             }, 800);
         }
 
-        // ============ INIT ============
         function init() {
             initStars();
             animate();
 
-            // Intro animations
             gsap.to('.intro-text', { opacity: 1, y: 0, duration: 1.8, delay: 0.8, ease: 'power2.out' });
             gsap.to('.intro-btn', { opacity: 1, scale: 1, duration: 1.8, delay: 1.2, ease: 'power2.out' });
             gsap.to('.intro-hint', { opacity: 1, duration: 1.2, delay: 3 });
             gsap.to('.glow-orb', { opacity: 1, duration: 3, delay: 0.5 });
             gsap.to(canvases.aurora, { opacity: 0.6, duration: 4, delay: 1 });
 
-            // Start button
             document.getElementById('startBtn').addEventListener('click', () => {
                 if (isRunning) return;
                 isRunning = true;
@@ -891,7 +872,6 @@
                 });
             });
 
-            // Controls
             document.getElementById('replayBtn').addEventListener('click', reset);
             document.getElementById('soundBtn').addEventListener('click', () => {
                 const muted = Sound.toggle();
